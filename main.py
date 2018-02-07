@@ -146,7 +146,7 @@ with tf.device('/gpu:0'):
 
 
     dcgan = DCGAN()
-    dcgan.train(epochs=40, batch_size=128, save_interval=50)
+    dcgan.train(epochs=4000, batch_size=128, save_interval=50)
 
     encoder = Model(x, z_mean)
 
