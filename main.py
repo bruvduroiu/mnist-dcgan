@@ -177,8 +177,7 @@ with tf.device('/gpu:0'):
     x_gen_imgs = dcgan.generate_sample(10000)
     x_encoded_imgs = encoder.predict(x_gen_imgs, batch_size=10000)
 
-    classified_imgs = classify_with_confidence(latent_vectors)
-
+    classified_imgs = classify_with_confidence(x_encoded_imgs)
 
     fig = plt.figure()
     ax = fig.gca()
