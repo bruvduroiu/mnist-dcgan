@@ -7,6 +7,8 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from scipy.stats import norm
 
+import tensorflow as tf
+
 import seaborn as sns
 
 # Deep Learning library
