@@ -120,7 +120,7 @@ class DCGAN:
 
 
     def generate_sample(self, num):
-        z = np.random.uniform(0, 1, num)
+        z = np.random.normal(0, 1, num)
         generated_images = self.generator.predict(noise)
         generated_images = 0.5 * generated_images + 0.5
         return generated_images    
@@ -168,5 +168,3 @@ class DCGAN:
                                                                                               d_accuracy=100*d_loss[1],
                                                                                               g_loss=g_loss))
 
-            if epoch % save_interval == 0:
-                # self.save_images(epoch)
