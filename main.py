@@ -2,6 +2,8 @@ import os
 
 # Linear algebra and plotting
 import numpy as np
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from scipy.stats import norm
 
@@ -175,5 +177,8 @@ with tf.device('/gpu:0'):
 
     classified_imgs = classify_with_confidence(latent_vectors)
 
-    plt.hist(classified_imgs)
-    plt.show()
+
+    fig = plt.figure()
+    ax = fig.gca()
+    ax.hist(classified_imgs, color='b')
+    fig.savefig('hist_gen.png')
