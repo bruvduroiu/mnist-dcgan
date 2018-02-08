@@ -186,7 +186,7 @@ with tf.device('/gpu:0'):
     def save_imgs_with_labels(images, labels):
         r, c = 10, 10
 
-        fig, axes = plt.subplots(r, c)
+        fig, axes = plt.subplots(r, c, figsize=(20,20))
         cnt = 0
         for i in range(r):
             for j in range(c):
