@@ -190,8 +190,9 @@ with tf.device('/gpu:0'):
         cnt = 0
         for i in range(r):
             for j in range(c):
-                axes[i,j].imshow(images[cnt, :, :, 0], cmap='gray')
-                axes[i,j].set_xlabel(labels[cnt])
+                if i % 2 == 0:
+                    axes[i,j].imshow(images[cnt, :, :, 0], cmap='gray')
+                    axes[i,j].set_xlabel(labels[cnt])
                 cnt += 1
         fig.savefig("images_sample.png")
 
