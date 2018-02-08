@@ -184,15 +184,14 @@ with tf.device('/gpu:0'):
         return classifications
 
     def save_imgs_with_labels(images, labels):
-        r, c = 10, 10
+        r, c = 5, 5
 
         fig, axes = plt.subplots(r, c, figsize=(20,20))
         cnt = 0
         for i in range(r):
             for j in range(c):
-                if i % 2 == 0:
-                    axes[i,j].imshow(images[cnt, :, :, 0], cmap='gray')
-                    axes[i,j].set_xlabel(labels[cnt])
+                axes[i,j].imshow(images[cnt, :, :, 0], cmap='gray')
+                axes[i,j].set_xlabel(labels[cnt])
                 cnt += 1
         fig.savefig("images_sample.png")
 
