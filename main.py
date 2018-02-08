@@ -126,11 +126,6 @@ X_test  = X_test.astype('float32') / 255
 X_train = X_train[:,:,:,None]
 X_test  = X_test[:,:,:,None]
 
-
-
-        
-
-
 # Train the model
 
 with tf.device('/gpu:0'):
@@ -188,8 +183,22 @@ with tf.device('/gpu:0'):
             classifications.append(max_label)
         return classifications
 
+    def save_imgs_with_labels(images, labels):
+        r, c = 10, 10
+
+        fig, axes = plt.subplots(r, c)
+        cnt = 0
+        for i in range(r):
+            for j in range(c):
+                axes[i,j].imshow(images[cnt, :, :, 0], cmap='gray')
+                axes[i,j].set_xlabel(labels[cnt])
+                cnt += 1
+        fig.savefig("images_sample.png")
+
     classified_imgs = classify_with_confidence(x_encoded_imgs)
     fig = plt.figure()
     ax = fig.gca()
     ax.hist(classified_imgs, color='b')
     fig.savefig('hist_gen.png')
+
+    save_imgs_with_labels(x_gen_imgs, classified_imgs)
