@@ -191,7 +191,8 @@ with tf.device('/gpu:0'):
         for i in range(r):
             for j in range(c):
                 axes[i,j].imshow(images[cnt, :, :, 0], cmap='gray')
-                axes[i,j].set_xlabel(labels[cnt])
+                axes[i,j].axis('off')
+                axes[i,j].set_title(labels[cnt])
                 cnt += 1
         fig.savefig("images_sample.png")
 
@@ -201,4 +202,5 @@ with tf.device('/gpu:0'):
     ax.hist(classified_imgs, color='b')
     fig.savefig('hist_gen.png')
 
-    save_imgs_with_labels(x_gen_imgs, classified_imgs)
+    idx = np.random.randint(0, x_gen_imgs.shape[0], size=(25,))
+    save_imgs_with_labels(x_gen_imgs[idx], classified_imgs[idx])
