@@ -202,5 +202,4 @@ with tf.device('/gpu:0'):
     ax.hist(classified_imgs, color='b')
     fig.savefig('hist_gen.png')
 
-    idx = np.random.randint(0, x_gen_imgs.shape[0], size=(25,))
-    save_imgs_with_labels(x_gen_imgs[idx], classified_imgs[idx])
+    save_imgs_with_labels(x_gen_imgs, classified_imgs)
