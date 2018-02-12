@@ -190,10 +190,10 @@ with tf.device('/gpu:0'):
         cnt = 0
         for i in range(r):
             for j in range(c):
+                cnt = np.random.randint(0, images.shape[0])
                 axes[i,j].imshow(images[cnt, :, :, 0], cmap='gray')
                 axes[i,j].axis('off')
                 axes[i,j].set_title(labels[cnt])
-                cnt += 1
         fig.savefig("images_sample.png")
 
     classified_imgs = classify_with_confidence(x_encoded_imgs)
