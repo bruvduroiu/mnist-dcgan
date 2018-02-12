@@ -5,6 +5,7 @@ import numpy as np
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
+from mpltoolkits.mplot3d import Axes3D
 from scipy.stats import norm
 
 import tensorflow as tf
@@ -201,7 +202,7 @@ with tf.device('/gpu:0'):
 
     def save_latent_space_distribution(encoded, encoded_labels, generated, generated_labels):
         fig = plt.figure(figsize=(20,20))
-        ax = fig.gca()
+        ax = fig.gca(projection='3d')
 
         ax.scatter(encoded[:,0], encoded[:,1], encoded[:,2], c=encoded_labels, cmap='jet')
         ax.scatter(generated[:,0], generated[:,1], generated[:,2],
