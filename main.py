@@ -198,7 +198,7 @@ with tf.device('/gpu:0'):
         ax = fig.gca()
 
         cax = ax.scatter(encoded[:,0], encoded[:,1], c=encoded_labels, cmap='jet')
-        cax.scatter(generated[:,0], generated[:,1],
+        ax.scatter(generated[:,0], generated[:,1],
                    s=200,
                    c=generated_labels,
                    marker='H',
