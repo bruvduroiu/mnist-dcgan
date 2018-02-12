@@ -157,6 +157,7 @@ with tf.device('/gpu:0'):
             
             mu = np.mean(encoded_test, axis=0)
             sigma = np.cov(encoded_test.T)
+            print('mu: {}; sigma: {}'.format(mu.shape, sigma.shape))
             
             return lambda x : (1 / (2*np.pi) * np.sqrt(np.linalg.det(sigma))) * np.exp( -0.5 * (x - mu).dot(np.linalg.inv(sigma)).dot((x - mu).T))
 
