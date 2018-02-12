@@ -215,4 +215,4 @@ with tf.device('/gpu:0'):
 
     save_imgs_with_labels(x_gen_imgs, classified_imgs)
 
-    save_latent_space_distribution(x_test_encoded, y_test, x_gen_imgs[:10], classified_imgs[:10])
+    save_latent_space_distribution(x_test_encoded, y_test, x_encoded_imgs[:10], classified_imgs[:10])
