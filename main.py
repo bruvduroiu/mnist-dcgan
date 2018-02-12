@@ -144,10 +144,10 @@ with tf.device('/gpu:0'):
 
     dcgan = DCGAN()
     if os.path.exists(GEN_WEIGHTS) and os.path.exists(DIS_WEIGHTS):
-        dcgan.load_weights(discriminator_file=DIS_WEIGHTS, generator_file=GEN_WEIGHTS)
+        dcgan.load_weights(DIS_WEIGHTS, GEN_WEIGHTS)
     else:
         dcgan.train(epochs=4000, batch_size=128, save_interval=50)
-        dcgan.save_weights(discriminator_file=DIS_WEIGHTS, generator_file=GEN_WEIGHTS)
+        dcgan.save_weights(DIS_WEIGHTS, GEN_WEIGHTS)
 
     encoder = Model(x, z_mean)
 
