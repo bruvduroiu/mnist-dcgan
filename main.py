@@ -202,7 +202,7 @@ with tf.device('/gpu:0'):
                    s=400,
                    c=generated_labels,
                    marker='H',
-                   linewidths=50,
+                   linewidths=5,
                    edgecolors='y')
 
         # for i, txt in enumerate(generated_labels):
