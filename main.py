@@ -203,7 +203,6 @@ with tf.device('/gpu:0'):
                    c=generated_labels,
                    marker='H',
                    edgecolors='y')
-        plt.colorbar(mappable=encoded_labels, ax=ax)
 
         # for i, txt in enumerate(generated_labels):
         #     ax.annotate(txt, xy=(generated[i,0], generated[i,1]), xytext=(generated[i,0]+0.5, generated[i,1]+0.5))
