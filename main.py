@@ -197,10 +197,26 @@ with tf.device('/gpu:0'):
                 axes[i,j].set_title(labels[cnt])
         fig.savefig("images_sample.png")
 
-    classified_imgs = classify_with_confidence(x_encoded_imgs)
+    def save_latent_space_distribution(encoded, encoded_labels, generated, generated_labels):
+        fig = plt.figure(figsize=(20,20))
+        ax = fig.gca()
+
+        cax = ax.scatter(encoded[:,0], encoded[:,1], c=encoded_labels, cmap='jet')
+        cbar = fig.colorbar(cax)
+
+        ax.scatter(generated[:,0], generated[:,1], s=100, c='r')
+
+        for i, txt in enumerate(generated_labels):
+            ax.annotate(txt, (generated[i,0], generated[i,1]))
+
+        fig.savefig('latent_space.png')
+
+    classified_imgs = classify_with_confidence(x_gen_imgs)
     fig = plt.figure()
     ax = fig.gca()
     ax.hist(classified_imgs, color='b')
     fig.savefig('hist_gen.png')
 
     save_imgs_with_labels(x_gen_imgs, classified_imgs)
+
+    save_latent_space_distribution(x_test_encoded, y_test, x_gen_imgs, classified_imgs)
