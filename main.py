@@ -5,7 +5,7 @@ import numpy as np
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-from mpl_toolkit.mplot3d import Axes3D
+from mpl_toolkits.mplot3d import Axes3D
 from scipy.stats import norm
 
 import tensorflow as tf
