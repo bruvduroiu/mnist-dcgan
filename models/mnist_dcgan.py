@@ -148,8 +148,8 @@ class DCGAN:
 
 
     def load_weights(self, discriminator_file, generator_file):
-        self.generator.load(generator_file)
-        self.discriminator.load(discriminator_file)
+        self.generator.load_weights(generator_file)
+        self.discriminator.load_weights(discriminator_file)
 
 
     def train(self, epochs, batch_size=128, save_interval=50):
