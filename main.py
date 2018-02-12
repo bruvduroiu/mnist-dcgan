@@ -31,12 +31,12 @@ n_conv = 3
 batch_size = 100
 latent_dim = 3
 intermediate_dim = 128
-epochs = 5
+epochs = 10
 epsilon_std = 1.0
 
 WEIGHTS_FILE = 'weights/mnist_vae.h5'
-GEN_WEIGHTS = 'weights/mnist_dcgan_generator.h5'
 DIS_WEIGHTS = 'weights/mnist_dcgan_discriminator.h5'
+GEN_WEIGHTS = 'weights/mnist_dcgan_generator.h5'
 
 original_img_size = (img_rows, img_cols, img_chns)
 
@@ -152,14 +152,15 @@ with tf.device('/gpu:0'):
 
     encoder = Model(x, z_mean)
 
+    x_encoded = encoder.predict(X_train, batch_size=batch_size)
     x_test_encoded = encoder.predict(X_test, batch_size=batch_size)
 
     x_gen_imgs = dcgan.generate_sample(10000)
     x_encoded_imgs = encoder.predict(x_gen_imgs, batch_size=10000)
 
     def get_gaussian(digit):
-        idx = [i for i in range(y_test.shape[0]) if y_test[i] == digit]
-        encoded_test = x_test_encoded[idx]
+        idx = [i for i in range(y_train.shape[0]) if y_train[i] == digit]
+        encoded_test = x_encoded[idx]
         
         mu = np.mean(encoded_test, axis=0)
         sigma = np.cov(encoded_test.T)
@@ -169,12 +170,13 @@ with tf.device('/gpu:0'):
     DIGITS = [i for i in range(10)]
     GAUSSIANS = dict([[i, get_gaussian(i)] for i in DIGITS])
     PRIORS = {}
-    total = y_test.shape[0]
-    PRIORS = dict([[i, sum([1 for x in y_test if x == i])/total] for i in DIGITS])
+    total = y_train.shape[0]
+    PRIORS = dict([[i, sum([1 for x in y_train if x == i])/total] for i in DIGITS])
 
     def classify_with_confidence(latent_vectors):
 
         classifications = []
+        confidence_scores = dict([[i, []] for i in DIGITS])
         for x in latent_vectors:
             max_label = -1
             max_classif = -1
@@ -185,7 +187,10 @@ with tf.device('/gpu:0'):
                     max_classif = classif
             print('Classification: {}; confidence: {}'.format(max_label, max_classif))
             classifications.append(max_label)
-        return classifications
+            confidence_scores[max_label].append(max_classif)
+        
+        confidence_scores = dict([[i, sum(confidence_scores[i])/(len(confidence_scores[i])+1e-6)] for i in DIGITS])
+        return classifications, confidence_scores
 
     def save_imgs_with_labels(images, labels):
         r, c = 5, 5
@@ -212,17 +217,29 @@ with tf.device('/gpu:0'):
                    linewidths=2,
                    edgecolors='y')
 
-        # for i, txt in enumerate(generated_labels):
-        #     ax.annotate(txt, xy=(generated[i,0], generated[i,1]), xytext=(generated[i,0]+0.5, generated[i,1]+0.5))
-
         fig.savefig('latent_space.png')
 
-    classified_imgs = classify_with_confidence(x_encoded_imgs)
-    fig = plt.figure()
-    ax = fig.gca()
-    ax.hist(classified_imgs, color='b')
-    fig.savefig('hist_gen.png')
+    def save_confidence(confidence_scores):
+        fig = plt.figure()
+        ax = fig.gca()
+        ax.plot(list(confidence_scores.values()))
+
+        fig.savefig('confidence_digits.png')
+            
+
+    def save_classification(classified_images):
+        fig = plt.figure()
+        ax = fig.gca()
+        ax.hist(classified_imgs, color='b')
+        fig.savefig('hist_gen.png')
+
+
+    classified_imgs, confidence_scores = classify_with_confidence(x_encoded_imgs)
+
+    save_classification(classified_imgs)
 
     save_imgs_with_labels(x_gen_imgs, classified_imgs)
 
     save_latent_space_distribution(x_test_encoded, y_test, x_encoded_imgs[:10], classified_imgs[:10])
+
+    save_confidence(confidence_scores)
