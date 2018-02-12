@@ -142,12 +142,12 @@ class DCGAN:
         fig.savefig("gen_%d.png" % epoch)
 
     
-    def save_weights(discriminator_file, generator_file):
+    def save_weights(self, discriminator_file, generator_file):
         self.generator.save(generator_file)
         self.discriminator.save(discriminator_file)
 
 
-    def load_weights(discriminator_file, generator_file):
+    def load_weights(self, discriminator_file, generator_file):
         self.generator.load(generator_file)
         self.discriminator.load(discriminator_file)
 
