@@ -169,7 +169,6 @@ with tf.device('/gpu:0'):
 
         classifications = []
         for x in latent_vectors:
-            print('Vector shape: {}'.format(x.shape))
             max_label = -1
             max_classif = -1
             for label, gaussian in GAUSSIANS.items():
