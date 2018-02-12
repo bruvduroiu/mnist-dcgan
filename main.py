@@ -180,6 +180,7 @@ with tf.device('/gpu:0'):
                 if classif > max_classif:
                     max_label = label
                     max_classif = classif
+            print('Classification: {}; confidence: {}'.format(max_label, max_classif))
             classifications.append(max_label)
         return classifications
 
