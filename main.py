@@ -208,7 +208,7 @@ with tf.device('/gpu:0'):
 
         fig.savefig('latent_space.png')
 
-    classified_imgs = classify_with_confidence(x_gen_imgs)
+    classified_imgs = classify_with_confidence(x_encoded_imgs)
     fig = plt.figure()
     ax = fig.gca()
     ax.hist(classified_imgs, color='b')
