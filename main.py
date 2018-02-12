@@ -34,6 +34,8 @@ epochs = 5
 epsilon_std = 1.0
 
 WEIGHTS_FILE = 'weights/mnist_vae.h5'
+GEN_WEIGHTS = 'weights/mnist_dcgan_generator.h5'
+DIS_WEIGHTS = 'weights/mnist_dcgan_discriminator.h5'
 
 original_img_size = (img_rows, img_cols, img_chns)
 
@@ -141,7 +143,11 @@ with tf.device('/gpu:0'):
 
 
     dcgan = DCGAN()
-    dcgan.train(epochs=4000, batch_size=128, save_interval=50)
+    if os.path.exists(GEN_WEIGHTS) and os.path.exists(DIS_WEIGHTS):
+        dcgan.load_weights(discriminator_file=DIS_WEIGHTS, generator_file=GEN_WEIGHTS)
+    else:
+        dcgan.train(epochs=4000, batch_size=128, save_interval=50)
+        dcgan.save_weights(discriminator_file=DIS_WEIGHTS, generator_file=GEN_WEIGHTS)
 
     encoder = Model(x, z_mean)
 

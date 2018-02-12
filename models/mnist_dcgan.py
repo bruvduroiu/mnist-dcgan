@@ -141,6 +141,17 @@ class DCGAN:
                 cnt += 1
         fig.savefig("gen_%d.png" % epoch)
 
+    
+    def save_weights(discriminator_file, generator_file):
+        self.generator.save(generator_file)
+        self.discriminator.save(discriminator_file)
+
+
+    def load_weights(discriminator_file, generator_file):
+        self.generator.load(generator_file)
+        self.discriminator.load(discriminator_file)
+
+
     def train(self, epochs, batch_size=128, save_interval=50):
         (X_train, y_train), (X_test, y_test) = mnist.load_data()
         X_train = (X_train.astype(np.float32) - 127.5) / 127.5
