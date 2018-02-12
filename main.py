@@ -153,10 +153,10 @@ with tf.device('/gpu:0'):
     def classify_with_confidence(latent_vectors):
         def _get_gaussian(digit):
             idx = [i for i in range(y_test.shape[0]) if y_test[i] == digit]
-            latent_vectors = x_test_encoded[idx]
+            encoded_test = x_test_encoded[idx]
             
-            mu = np.mean(latent_vectors, axis=0)
-            sigma = np.cov(latent_vectors.T)
+            mu = np.mean(encoded_test, axis=0)
+            sigma = np.cov(encoded_test.T)
             
             return lambda x : (1 / (2*np.pi) * np.sqrt(np.linalg.det(sigma))) * np.exp( -0.5 * (x - mu).dot(np.linalg.inv(sigma)).dot((x - mu).T))
 
