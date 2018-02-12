@@ -198,12 +198,15 @@ with tf.device('/gpu:0'):
         ax = fig.gca()
 
         cax = ax.scatter(encoded[:,0], encoded[:,1], c=encoded_labels, cmap='jet')
+        cax = ax.scatter(generated[:,0], generated[:,1],
+                   s=200,
+                   c='r',
+                   marker='H',
+                   edgecolors='y')
         cbar = fig.colorbar(cax)
 
-        ax.scatter(generated[:,0], generated[:,1], s=100, c='r')
-
-        for i, txt in enumerate(generated_labels):
-            ax.annotate(txt, (generated[i,0], generated[i,1]))
+        # for i, txt in enumerate(generated_labels):
+        #     ax.annotate(txt, xy=(generated[i,0], generated[i,1]), xytext=(generated[i,0]+0.5, generated[i,1]+0.5))
 
         fig.savefig('latent_space.png')
 
