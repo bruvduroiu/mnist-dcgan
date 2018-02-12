@@ -150,34 +150,30 @@ with tf.device('/gpu:0'):
     x_gen_imgs = dcgan.generate_sample(10000)
     x_encoded_imgs = encoder.predict(x_gen_imgs, batch_size=10000)
 
+    def get_gaussian(digit):
+        idx = [i for i in range(y_test.shape[0]) if y_test[i] == digit]
+        encoded_test = x_test_encoded[idx]
+        
+        mu = np.mean(encoded_test, axis=0)
+        sigma = np.cov(encoded_test.T)
+        
+        return lambda x : (1 / (2*np.pi) * np.sqrt(np.linalg.det(sigma))) * np.exp( -0.5 * (x - mu).dot(np.linalg.inv(sigma)).dot((x - mu).T))
+
+    DIGITS = [i for i in range(10)]
+    GAUSSIANS = dict([[i, get_gaussian(i)] for i in DIGITS])
+    PRIORS = {}
+    total = y_test.shape[0]
+    PRIORS = dict([[i, sum([1 for x in y_test if x == i])/total] for i in DIGITS])
+
     def classify_with_confidence(latent_vectors):
-        def _get_gaussian(digit):
-            idx = [i for i in range(y_test.shape[0]) if y_test[i] == digit]
-            encoded_test = x_test_encoded[idx]
-            
-            mu = np.mean(encoded_test, axis=0)
-            sigma = np.cov(encoded_test.T)
-            print('mu: {}; sigma: {}'.format(mu.shape, sigma.shape))
-            
-            return lambda x : (1 / (2*np.pi) * np.sqrt(np.linalg.det(sigma))) * np.exp( -0.5 * (x - mu).dot(np.linalg.inv(sigma)).dot((x - mu).T))
-
-        DIGITS = [i for i in range(10)]
-        GAUSSIANS = dict([[i, _get_gaussian(i)] for i in DIGITS])
-        PRIORS = {}
-
-        total = y_test.shape[0]
-        PRIORS = dict([[i, sum([1 for x in y_test if x == i])/total] for i in DIGITS])
-
-        def _compute_posterior(digit, vector):
-            posterior = (PRIORS[digit] * GAUSSIANS[digit](vector)) / sum([PRIORS[i] * GAUSSIANS[i](vector) for i in DIGITS])
-            return posterior
 
         classifications = []
         for x in latent_vectors:
+            print('Vector shape: {}'.format(x.shape))
             max_label = -1
             max_classif = -1
             for label, gaussian in GAUSSIANS.items():
-                classif = _compute_posterior(label, x)
+                classif = (PRIORS[label] * gaussian(x)) / sum([PRIORS[i] * GAUSSIANS[i](x) for i in DIGITS])
                 if classif > max_classif:
                     max_label = label
                     max_classif = classif
