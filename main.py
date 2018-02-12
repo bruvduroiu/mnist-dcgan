@@ -199,9 +199,10 @@ with tf.device('/gpu:0'):
 
         ax.scatter(encoded[:,0], encoded[:,1], c=encoded_labels, cmap='jet')
         ax.scatter(generated[:,0], generated[:,1],
-                   s=200,
+                   s=400,
                    c=generated_labels,
                    marker='H',
+                   linewidths=50,
                    edgecolors='y')
 
         # for i, txt in enumerate(generated_labels):
