@@ -197,13 +197,13 @@ with tf.device('/gpu:0'):
         fig = plt.figure(figsize=(20,20))
         ax = fig.gca()
 
-        cax = ax.scatter(encoded[:,0], encoded[:,1], c=encoded_labels, cmap='jet')
+        ax.scatter(encoded[:,0], encoded[:,1], c=encoded_labels, cmap='jet')
         ax.scatter(generated[:,0], generated[:,1],
                    s=200,
                    c=generated_labels,
                    marker='H',
                    edgecolors='y')
-        cbar = fig.colorbar(cax)
+        plt.colorbar(mappable=encoded_labels, ax=ax)
 
         # for i, txt in enumerate(generated_labels):
         #     ax.annotate(txt, xy=(generated[i,0], generated[i,1]), xytext=(generated[i,0]+0.5, generated[i,1]+0.5))
